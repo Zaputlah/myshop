@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app" class="container">
+        <nav class="navbar navbar-light bg-light mb-10 fixed-top">
+            <button class="btn btn-sm btn-outline-success" @click="style.sliderStatus = !style.sliderStatus">
+                <i class="fas fa-dollar-sign"></i>
+            </button>
+            <div class="navbar-text ml-auto">
+                <div class="ml-2" v-if="cart.length > 0">
+                    <button class="btn btn-success btn-sm dropdown-toggle mt-2" id="dropdownCart" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <b class="cart">Cart:</b>
+                        <span class="badge badge-pill badge-success">{{ uniqueCartItemQty }}</span>
+                        <i class="fas fa-shopping-cart mx-2"></i>$
+                        {{ cartTotal | currencyFormat}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right"
+                        enter-active-class="animate__animated animate__fadeIn"
+                        leave-active-class="animate__animated animate__fadeOut" aria-labelledby="dropdownCart">
+                        <div v-for="(product, index) in cart" :key="index" class="cart-item">
+                            <div class="cart-item-quantity">
+                                <span class="badge badge-pill badge-warning">{{ product.qty }}</span>
+                            </div>
+                            <div class="cart-item-details">
+                                <p class="cart-item-name">{{ product.name }}</p>
+                                <b class="cart-item-price">${{ product.price * product.qty | currencyFormat }}</b>
+                            </div>
+                            <div class="cart-item-actions">
+                                <button @click="decreaseQuantity(product)" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <br>
+        <h1 class="Shop mt-6">My Shop</h1>
+        <transition name="custom" enter-active-class="animate__animated animate__fadeIn"
+            leave-active-class="animate__animated animate__fadeOut">
+            <div class="slider" v-if="style.sliderStatus" key="slider">
+                <div class="align-items-center" :class="sliderState">
+                    <label :class="style.label">Max</label>
+                    <input type="number" class="form-control mx-2"
+                        :style="{'width': inputWid + 'px', 'text-align': 'center'}" v-model="maximum">
+                    <input type="range" class="custom-range" min="0" v-model="maximum" :max="200">
+                </div>
+            </div>
+        </transition>
+
+        <transition-group name="custom" enter-active-class=" animate__animated animate__lightSpeedInRight"
+            leave-active-class="animate__animated animate__lightSpeedOutRight">
+            <!-- Iterasi melalui produk dan menampilkan informasi -->
+            <div class="row d-flex mb-3 align-items-center" v-for="product in filteredProducts" :key="product.id">
+                <div class="col-12 col-sm-4">
+                    <button class="btn btn-info float-right" @click="addToCart(product)">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <img class="img-fluid d-block" :src="product.image" :alt="product.image_title">
+                </div>
+                <div class="col">
+                    <h2>{{ product.name }}</h2>
+                    <p>{{ product.description }}</p>
+                    <div>$ {{ product.price | currencyFormat }}</div>
+                </div>
+            </div>
+        </transition-group>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.26/dist/vue.global.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

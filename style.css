@@ -1,0 +1,250 @@
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    padding-top: 80px;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.navbar {
+    background-color: #fff;
+}
+
+.navbar button {
+    margin-right: 10px;
+}
+
+/* Cart Styles */
+/* Cart Button Styles */
+#dropdownCart {
+    background-color: transparent;
+    border: none;
+    margin-top: 10px;
+    color: #333;
+    /* Warna teks tombol */
+}
+
+#dropdownCart:hover {
+    background-color: transparent;
+    color: #007bff;
+    /* Warna teks tombol saat hover */
+}
+
+#dropdownCart:focus {
+    box-shadow: none;
+}
+
+#dropdownCart .badge-pill {
+    background-color: #28a745;
+    /* Warna latar badge */
+    color: #fff;
+    /* Warna teks badge */
+    margin-left: 5px;
+}
+
+#dropdownCart i {
+    font-size: 20px;
+    vertical-align: middle;
+}
+
+#dropdownCart .badge {
+    vertical-align: middle;
+}
+
+#dropdownCart b {
+    margin-right: 5px;
+}
+
+#dropdownCart .dropdown-menu {
+    max-height: 200px;
+    overflow-y: auto;
+    left: auto;
+    right: 0;
+    min-width: 220px;
+    /* Lebar minimal dropdown menu */
+}
+
+#dropdownCart .dropdown-item-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 10px;
+}
+
+#dropdownCart .btn-danger {
+    font-size: 14px;
+    padding: 0px 5px;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+/* Styling for Cart Element */
+.cart {
+    font-weight: bold;
+    /* Membuat teks "Cart:" menjadi tebal */
+    margin-right: 5px;
+    /* Memberi jarak dari elemen berikutnya */
+}
+
+/* Styling for Badge */
+.badge-success {
+    background-color: #28a745;
+    /* Warna latar belakang badge */
+    color: #fff;
+    /* Warna teks pada badge */
+    font-size: 14px;
+    /* Ukuran teks pada badge */
+    vertical-align: middle;
+    /* Mengatur penempatan vertikal */
+    margin-left: 5px;
+    /* Memberi jarak dari elemen sebelumnya */
+}
+
+/* Styling for Shopping Cart Icon */
+.fa-shopping-cart {
+    font-size: 20px;
+    /* Ukuran ikon */
+    vertical-align: middle;
+    /* Mengatur penempatan vertikal */
+}
+
+/* Styling for Total Price */
+.cart-total {
+    font-weight: bold;
+    /* Membuat teks total harga menjadi tebal */
+    margin-left: 5px;
+    /* Memberi jarak dari elemen sebelumnya */
+}
+
+
+.dropdown-menu {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Style for the cart item container */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Style for the quantity badge */
+.cart-item-quantity .badge {
+    background-color: #ffc107;
+    color: #333;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Style for the cart item details */
+.cart-item-details {
+    flex-grow: 1;
+    padding: 0 10px;
+}
+
+/* Style for the cart item name */
+.cart-item-name {
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Style for the cart item price */
+.cart-item-price {
+    font-weight: bold;
+}
+
+/* Style for the decrease button */
+.cart-item-actions .btn {
+    background-color: #dc3545;
+    color: #fff;
+    font-size: 10px;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Hover effect for the decrease button */
+.cart-item-actions .btn:hover {
+    background-color: #c82333;
+}
+
+
+
+/* Shop Styles */
+.Shop {
+    margin-top: 20px;
+}
+
+/* Slider Styles */
+.slider {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Product Styles */
+.row.d-flex.mb-3.align-items-center {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.row.d-flex.mb-3.align-items-center img {
+    max-width: 100%;
+}
+
+.btn-info.float-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* Mobile Styles */
+@media (max-width: 767px) {
+    .navbar {
+        padding: 10px;
+    }
+
+    .navbar button {
+        margin-right: 5px;
+    }
+
+    .btn-info.float-right {
+        position: relative;
+        top: auto;
+        right: auto;
+        float: right;
+    }
+
+    .row.d-flex.mb-3.align-items-center {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .btn-info.float-right {
+        position: relative;
+        top: auto;
+        right: auto;
+        float: right;
+    }
+}
