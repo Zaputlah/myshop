@@ -1,90 +1,222 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <meta name="description" content="Pilihan perlengkapan aktif yang fungsional untuk rutinitas sehari-hari.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>H+ Supply - Everyday essentials</title>
 </head>
 
 <body>
-    <div id="app" class="container">
-        <nav class="navbar navbar-light bg-light mb-10 fixed-top">
-            <button class="btn btn-sm btn-outline-success" @click="style.sliderStatus = !style.sliderStatus">
-                <i class="fas fa-dollar-sign"></i>
+    <div id="app" v-cloak>
+        <div class="announcement">
+            <p>Gratis pengiriman untuk pesanan di atas $100</p>
+            <span>Jakarta / Indonesia</span>
+        </div>
+
+        <header class="site-header">
+            <a class="brand" href="#" aria-label="H+ Supply home">
+                H<span>+</span> SUPPLY
+            </a>
+
+            <nav class="main-nav" aria-label="Navigasi utama">
+                <a href="#products">Koleksi</a>
+                <a href="#story">Tentang kami</a>
+            </nav>
+
+            <button class="cart-trigger" type="button" @click="cartOpen = true" aria-label="Buka keranjang">
+                <span>Keranjang</span>
+                <span class="cart-count">{{ cartQty }}</span>
             </button>
-            <div class="navbar-text ml-auto">
-                <div class="ml-2" v-if="cart.length > 0">
-                    <button class="btn btn-success btn-sm dropdown-toggle mt-2" id="dropdownCart" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <b class="cart">Cart:</b>
-                        <span class="badge badge-pill badge-success">{{ uniqueCartItemQty }}</span>
-                        <i class="fas fa-shopping-cart mx-2"></i>$
-                        {{ cartTotal | currencyFormat}}
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right"
-                        enter-active-class="animate__animated animate__fadeIn"
-                        leave-active-class="animate__animated animate__fadeOut" aria-labelledby="dropdownCart">
-                        <div v-for="(product, index) in cart" :key="index" class="cart-item">
-                            <div class="cart-item-quantity">
-                                <span class="badge badge-pill badge-warning">{{ product.qty }}</span>
-                            </div>
-                            <div class="cart-item-details">
-                                <p class="cart-item-name">{{ product.name }}</p>
-                                <b class="cart-item-price">${{ product.price * product.qty | currencyFormat }}</b>
-                            </div>
-                            <div class="cart-item-actions">
-                                <button @click="decreaseQuantity(product)" class="btn btn-danger btn-sm">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
+        </header>
+
+        <main>
+            <section class="hero" aria-labelledby="hero-title">
+                <div class="hero-copy">
+                    <p class="eyebrow">Everyday movement / 2026</p>
+                    <h1 id="hero-title">Dibuat untuk<br><em>terus <span>bergerak.</span></em></h1>
+                    <p class="hero-description">
+                        Perlengkapan aktif yang sederhana, fungsional, dan enak dipakai.
+                        Dipilih untuk rutinitas harian, bukan hanya akhir pekan.
+                    </p>
+                    <a class="text-link" href="#products">
+                        Lihat koleksi
+                        <span aria-hidden="true">&darr;</span>
+                    </a>
+                </div>
+
+                <div class="hero-visual">
+                    <img :src="featuredProduct.image" :alt="featuredProduct.image_title || featuredProduct.name">
+                    <div class="hero-caption">
+                        <span>Pilihan minggu ini</span>
+                        <strong>{{ featuredProduct.name }}</strong>
                     </div>
                 </div>
-            </div>
-        </nav>
-        <br>
-        <h1 class="Shop mt-6">My Shop</h1>
-        <transition name="custom" enter-active-class="animate__animated animate__fadeIn"
-            leave-active-class="animate__animated animate__fadeOut">
-            <div class="slider" v-if="style.sliderStatus" key="slider">
-                <div class="align-items-center" :class="sliderState">
-                    <label :class="style.label">Max</label>
-                    <input type="number" class="form-control mx-2"
-                        :style="{'width': inputWid + 'px', 'text-align': 'center'}" v-model="maximum">
-                    <input type="range" class="custom-range" min="0" v-model="maximum" :max="200">
+            </section>
+
+            <section class="story-strip" id="story" aria-label="Nilai utama toko">
+                <p>Hal-hal baik tidak perlu rumit.</p>
+                <div class="story-points">
+                    <span>Dipilih dengan teliti</span>
+                    <span>Siap dipakai setiap hari</span>
+                    <span>Pengiriman 2-4 hari</span>
                 </div>
+            </section>
+
+            <section class="catalog" id="products" aria-labelledby="catalog-title">
+                <div class="catalog-heading">
+                    <div>
+                        <p class="eyebrow">Koleksi lengkap</p>
+                        <h2 id="catalog-title">Temukan andalanmu.</h2>
+                    </div>
+                    <p class="result-count">{{ filteredProducts.length }} produk</p>
+                </div>
+
+                <div class="catalog-tools">
+                    <label class="search-box">
+                        <svg aria-hidden="true" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <path d="m16 16 4 4"></path>
+                        </svg>
+                        <span class="sr-only">Cari produk</span>
+                        <input v-model.trim="search" type="search" placeholder="Cari produk">
+                    </label>
+
+                    <div class="tool-actions">
+                        <button class="tool-button" type="button" @click="filterOpen = !filterOpen"
+                            :aria-expanded="filterOpen">
+                            Harga maks. {{ formatCurrency(maximum) }}
+                            <svg aria-hidden="true" viewBox="0 0 24 24">
+                                <path d="M6 9l6 6 6-6"></path>
+                            </svg>
+                        </button>
+
+                        <label class="sort-select">
+                            <span class="sr-only">Urutkan produk</span>
+                            <select v-model="sort">
+                                <option value="featured">Pilihan utama</option>
+                                <option value="low">Harga terendah</option>
+                                <option value="high">Harga tertinggi</option>
+                            </select>
+                            <svg aria-hidden="true" viewBox="0 0 24 24">
+                                <path d="M6 9l6 6 6-6"></path>
+                            </svg>
+                        </label>
+                    </div>
+                </div>
+
+                <transition name="filter">
+                    <div class="price-filter" v-if="filterOpen">
+                        <div class="filter-label">
+                            <span>Rentang harga</span>
+                            <strong>hingga {{ formatCurrency(maximum) }}</strong>
+                        </div>
+                        <input v-model.number="maximum" type="range" min="0" :max="priceRangeMax" step="5">
+                    </div>
+                </transition>
+
+                <div class="product-grid" :class="{ 'is-loading': loading }" v-if="filteredProducts.length">
+                    <article class="product-card" v-for="(product, index) in filteredProducts" :key="product.id">
+                        <div class="product-image">
+                            <img :src="product.image" :alt="product.image_title || product.name" loading="lazy">
+                            <span class="product-note" v-if="index < 2">Pilihan kami</span>
+                            <button type="button" @click="addToCart(product)"
+                                :aria-label="'Tambah ' + product.name + ' ke keranjang'">
+                                <span>Tambah</span>
+                                <svg aria-hidden="true" viewBox="0 0 24 24">
+                                    <path d="M12 5v14M5 12h14"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="product-info">
+                            <div>
+                                <h3>{{ product.name }}</h3>
+                                <p>{{ product.description }}</p>
+                            </div>
+                            <strong>{{ formatCurrency(product.price) }}</strong>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="empty-products" v-else>
+                    <p>Tidak ada produk yang cocok.</p>
+                    <button type="button" @click="resetFilters">Atur ulang pencarian</button>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <a class="brand footer-brand" href="#">H<span>+</span> SUPPLY</a>
+            <p>Essentials for moving well.</p>
+            <span>&copy; 2026 H+ Supply</span>
+        </footer>
+
+        <transition name="backdrop">
+            <div class="cart-backdrop" v-if="cartOpen" @click.self="cartOpen = false">
+                <aside class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+                    <div class="cart-header">
+                        <div>
+                            <p class="eyebrow">Pesananmu</p>
+                            <h2 id="cart-title">Keranjang <span>({{ cartQty }})</span></h2>
+                        </div>
+                        <button class="icon-button" type="button" @click="cartOpen = false"
+                            aria-label="Tutup keranjang">
+                            <svg aria-hidden="true" viewBox="0 0 24 24">
+                                <path d="M5 5l14 14M19 5 5 19"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="cart-items" v-if="cart.length">
+                        <article class="cart-item" v-for="product in cart" :key="product.id">
+                            <img :src="product.image" :alt="product.name">
+                            <div class="cart-item-copy">
+                                <div>
+                                    <h3>{{ product.name }}</h3>
+                                    <strong>{{ formatCurrency(product.price * product.qty) }}</strong>
+                                </div>
+                                <div class="quantity-control">
+                                    <button type="button" @click="decreaseQuantity(product)"
+                                        :aria-label="'Kurangi ' + product.name">&minus;</button>
+                                    <span>{{ product.qty }}</span>
+                                    <button type="button" @click="increaseQuantity(product)"
+                                        :aria-label="'Tambah ' + product.name">&plus;</button>
+                                </div>
+                                <button class="remove-button" type="button" @click="removeFromCart(product)">
+                                    Hapus
+                                </button>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="empty-cart" v-else>
+                        <span>0</span>
+                        <h3>Keranjangmu masih kosong.</h3>
+                        <p>Mulai dari satu barang yang akan sering kamu pakai.</p>
+                        <button type="button" @click="cartOpen = false">Lihat koleksi</button>
+                    </div>
+
+                    <div class="cart-summary" v-if="cart.length">
+                        <div>
+                            <span>Subtotal</span>
+                            <strong>{{ formatCurrency(cartTotal) }}</strong>
+                        </div>
+                        <p>Pengiriman dihitung saat checkout.</p>
+                        <button class="checkout-button" type="button">Lanjut ke checkout</button>
+                    </div>
+                </aside>
             </div>
         </transition>
-
-        <transition-group name="custom" enter-active-class=" animate__animated animate__lightSpeedInRight"
-            leave-active-class="animate__animated animate__lightSpeedOutRight">
-            <!-- Iterasi melalui produk dan menampilkan informasi -->
-            <div class="row d-flex mb-3 align-items-center" v-for="product in filteredProducts" :key="product.id">
-                <div class="col-12 col-sm-4">
-                    <button class="btn btn-info float-right" @click="addToCart(product)">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                    <img class="img-fluid d-block" :src="product.image" :alt="product.image_title">
-                </div>
-                <div class="col">
-                    <h2>{{ product.name }}</h2>
-                    <p>{{ product.description }}</p>
-                    <div>$ {{ product.price | currencyFormat }}</div>
-                </div>
-            </div>
-        </transition-group>
-
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.26/dist/vue.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.5.13/dist/vue.global.prod.js"></script>
     <script src="app.js"></script>
 </body>
 
